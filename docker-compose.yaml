@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
     container_name: remix-dev
     volumes:
-      - .:/app
-      - node_modules:/app/node_modules
+      - ./remix-app:/app
+      - remix_app_node_modules:/app/node_modules
     ports:
       - "3000:3000"  # Remix development server
       - "5173:5173"  # Vite development server (if needed)
@@ -14,14 +14,22 @@ services:
       - NODE_ENV=development
     command: >
       bash -c "
-        if [ ! -f package.json ]; then
-          pnpm create remix@latest . --template remix-run/remix/templates/vite
+        if [ ! -d node_modules ]; then
+          if [ ! -f package.json ]; then
+            echo 'Creating new Remix project...'
+            npx create-remix@latest . --template remix-run/indie-stack
+          fi
+          echo 'Installing dependencies...'
+          pnpm install
         fi &&
-        pnpm install &&
+        echo 'Starting development server...' &&
         pnpm run dev
       "
     tty: true
     stdin_open: true
+    # This line makes the container use the host's network interface
+    # Helpful for some network-related issues on macOS or WSL
+    # network_mode: "host"  # Uncomment if needed for specific environments
 
 volumes:
-  node_modules:
+  remix_app_node_modules:

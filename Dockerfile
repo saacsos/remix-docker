@@ -25,9 +25,17 @@ RUN apt-get update && apt-get install -y \
 RUN locale-gen en_US.UTF-8
 RUN locale-gen th_TH.UTF-8
 
-# ติดตั้ง Node.js
+# ติดตั้ง Node.js - ตรวจสอบและติดตั้งตามสถาปัตยกรรมระบบ
 ENV NODE_VERSION=20.11.1
-RUN curl -fsSL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz | tar xz -C /usr/local --strip-components=1 \
+RUN ARCH=$(uname -m) \
+    && if [ "$ARCH" = "x86_64" ]; then \
+         NODE_ARCH="x64"; \
+       elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then \
+         NODE_ARCH="arm64"; \
+       else \
+         echo "Unsupported architecture: $ARCH" && exit 1; \
+       fi \
+    && curl -fsSL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.gz | tar xz -C /usr/local --strip-components=1 \
     && node --version \
     && npm --version
 
