@@ -1,12 +1,12 @@
 FROM ubuntu:24.04
 
-# ตั้งค่าไทม์โซนและภาษา
+# Set timezone and language
 ENV TZ=Asia/Bangkok
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 
-# อัปเดตระบบและติดตั้งซอฟต์แวร์พื้นฐาน
+# Update system and install basic software
 RUN apt-get update && apt-get install -y \
     curl \
     git \
@@ -21,11 +21,11 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# ตั้งค่าภาษา
+# Setup language
 RUN locale-gen en_US.UTF-8
 RUN locale-gen th_TH.UTF-8
 
-# ติดตั้ง Node.js - ตรวจสอบและติดตั้งตามสถาปัตยกรรมระบบ
+# Install Node.js with architecture detection
 ENV NODE_VERSION=20.11.1
 RUN ARCH=$(uname -m) \
     && if [ "$ARCH" = "x86_64" ]; then \
@@ -39,22 +39,17 @@ RUN ARCH=$(uname -m) \
     && node --version \
     && npm --version
 
-# ติดตั้ง pnpm
+# Install pnpm
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PNPM_HOME}:${PATH}"
 RUN npm install -g pnpm@latest \
     && pnpm --version
 
-# ติดตั้ง Remix.js CLI และเครื่องมืออื่นๆ
-# Note: We'll install Remix CLI locally in each project instead of globally
-# This helps avoid version conflicts and missing module issues
-RUN npm install -g vite typescript
-
-# สร้างโฟลเดอร์สำหรับแอพพลิเคชัน
+# Create application folder
 WORKDIR /app
 
-# เปิดพอร์ตสำหรับการพัฒนา
+# Expose ports for development
 EXPOSE 3000 5173
 
-# ตั้งค่า default command
+# Default command
 CMD ["bash"]

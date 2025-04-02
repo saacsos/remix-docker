@@ -14,24 +14,21 @@ services:
       - NODE_ENV=development
     command: >
       bash -c "
-        if [ ! -d node_modules ]; then
-          if [ ! -f package.json ]; then
-            echo 'Creating new Remix project...'
-            npx create-remix@latest . --template remix-run/indie-stack
-          fi
-          echo 'Installing dependencies...'
-          pnpm install
+        if [ ! -d node_modules ] || [ ! -f package.json ]; then
+          echo 'Creating new Remix project from scratch...'
+          # Use npx directly instead of a globally installed remix
+          npx create-remix@latest --template remix-run/indie-stack .
         fi &&
+        echo 'Installing dependencies...' &&
+        pnpm install &&
+        echo 'Setting up Prisma...' &&
+        npx prisma generate &&
         echo 'Starting development server...' &&
-        # Run dev command from the project's package.json
-        # This ensures we use the locally installed Remix version
-        pnpm run dev
+        # Use npx to run the locally installed remix
+        npx remix dev
       "
     tty: true
     stdin_open: true
-    # This line makes the container use the host's network interface
-    # Helpful for some network-related issues on macOS or WSL
-    # network_mode: "host"  # Uncomment if needed for specific environments
 
 volumes:
   remix_app_node_modules:
