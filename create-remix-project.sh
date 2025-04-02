@@ -11,4 +11,3 @@ docker run -it --rm \
   remix-dev-image \
   bash -c "pnpm create remix@latest . --template remix-run/remix/templates/vite && pnpm install"
 
-echo "Remix project created successfully!"
