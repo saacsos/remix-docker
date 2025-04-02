@@ -1,0 +1,61 @@
+# Node modules and dependencies
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+.pnpm-store/
+
+# Build outputs
+/build
+/dist
+/api/build
+/public/build
+/.cache
+
+# Development environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Git related
+.git
+.gitignore
+.github
+
+# Docker related
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Editor directories and files
+.idea
+.vscode
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+/coverage
+/cypress
+
+# Logs
+logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.eslintcache
+
+# Cache directories
+.turbo
+
+# Misc
+.husky
+.next
+README.md
+LICENSE
+*.md

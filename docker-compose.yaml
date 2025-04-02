@@ -1,0 +1,27 @@
+services:
+  remix-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: remix-dev
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    ports:
+      - "3000:3000"  # Remix development server
+      - "5173:5173"  # Vite development server (if needed)
+    environment:
+      - NODE_ENV=development
+    command: >
+      bash -c "
+        if [ ! -f package.json ]; then
+          pnpm create remix@latest . --template remix-run/remix/templates/vite
+        fi &&
+        pnpm install &&
+        pnpm run dev
+      "
+    tty: true
+    stdin_open: true
+
+volumes:
+  node_modules:

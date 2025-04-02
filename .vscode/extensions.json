@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "bradlc.vscode-tailwindcss",
+      "ms-vscode.vscode-typescript-next",
+      "csstools.postcss",
+      "formulahendry.auto-rename-tag",
+      "naumovs.color-highlight",
+      "mikestead.dotenv",
+      "christian-kohler.path-intellisense",
+      "mskelton.one-dark-theme",
+      "PKief.material-icon-theme"
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "editor.fontFamily": "Hack, 'monospace', monospace",
+    "terminal.integrated.fontFamily": "Hack, 'monospace', monospace",
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "emmet.includeLanguages": {
+      "javascript": "javascriptreact",
+      "typescript": "typescriptreact"
+    },
+    "tailwindCSS.includeLanguages": {
+      "javascript": "javascript",
+      "typescript": "typescript",
+      "javascriptreact": "javascriptreact",
+      "typescriptreact": "typescriptreact"
+    },
+    "files.associations": {
+      "*.css": "tailwindcss"
+    },
+    "files.autoSave": "afterDelay"
+  }
