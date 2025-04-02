@@ -1,12 +1,12 @@
 FROM ubuntu:24.04
 
-# ตั้งค่าไทม์โซนและภาษา
+# Set timezone and language
 ENV TZ=Asia/Bangkok
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 
-# อัปเดตระบบและติดตั้งซอฟต์แวร์พื้นฐาน
+# Update system and install basic software
 RUN apt-get update && apt-get install -y \
     curl \
     git \
@@ -21,30 +21,35 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# ตั้งค่าภาษา
+# Setup language
 RUN locale-gen en_US.UTF-8
 RUN locale-gen th_TH.UTF-8
 
-# ติดตั้ง Node.js
+# Install Node.js with architecture detection
 ENV NODE_VERSION=20.11.1
-RUN curl -fsSL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz | tar xz -C /usr/local --strip-components=1 \
+RUN ARCH=$(uname -m) \
+    && if [ "$ARCH" = "x86_64" ]; then \
+         NODE_ARCH="x64"; \
+       elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then \
+         NODE_ARCH="arm64"; \
+       else \
+         echo "Unsupported architecture: $ARCH" && exit 1; \
+       fi \
+    && curl -fsSL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.gz | tar xz -C /usr/local --strip-components=1 \
     && node --version \
     && npm --version
 
-# ติดตั้ง pnpm
+# Install pnpm
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PNPM_HOME}:${PATH}"
 RUN npm install -g pnpm@latest \
     && pnpm --version
 
-# ติดตั้ง Remix.js CLI และเครื่องมืออื่นๆ
-RUN npm install -g @remix-run/dev vite typescript
-
-# สร้างโฟลเดอร์สำหรับแอพพลิเคชัน
+# Create application folder
 WORKDIR /app
 
-# เปิดพอร์ตสำหรับการพัฒนา
+# Expose ports for development
 EXPOSE 3000 5173
 
-# ตั้งค่า default command
+# Default command
 CMD ["bash"]
