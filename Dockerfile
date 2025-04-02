@@ -26,7 +26,7 @@ RUN locale-gen en_US.UTF-8
 RUN locale-gen th_TH.UTF-8
 
 # ติดตั้ง Node.js
-ENV NODE_VERSION=22.14.1
+ENV NODE_VERSION=20.11.1
 RUN curl -fsSL https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz | tar xz -C /usr/local --strip-components=1 \
     && node --version \
     && npm --version
