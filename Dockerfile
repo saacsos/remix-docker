@@ -46,7 +46,9 @@ RUN npm install -g pnpm@latest \
     && pnpm --version
 
 # ติดตั้ง Remix.js CLI และเครื่องมืออื่นๆ
-RUN npm install -g @remix-run/dev vite typescript
+# Note: We'll install Remix CLI locally in each project instead of globally
+# This helps avoid version conflicts and missing module issues
+RUN npm install -g vite typescript
 
 # สร้างโฟลเดอร์สำหรับแอพพลิเคชัน
 WORKDIR /app

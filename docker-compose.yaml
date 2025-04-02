@@ -23,6 +23,8 @@ services:
           pnpm install
         fi &&
         echo 'Starting development server...' &&
+        # Run dev command from the project's package.json
+        # This ensures we use the locally installed Remix version
         pnpm run dev
       "
     tty: true
